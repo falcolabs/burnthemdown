@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <title>FalcoLabs VoteBurn®</title>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'
+        integrity='sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z' crossorigin='anonymous'>
+    <script type='text/javascript' src='https://www.google.com/recaptcha/api.js' async defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <style>
+        .g-recaptcha {
+            display: inline-block;
+            margin: 20px;
+        }
+    </style>
+
+<script>
+    let TOTAL_VOTES = 0
+    let vsent = window.sessionStorage.getItem("votesSent");
+    if (vsent !== null) {
+        TOTAL_VOTES = JSON.parse(vsent)
+    }
+
+    console.log("voted", TOTAL_VOTES, "times")
+
+    function trigger_send() {
+        send_vote(document.getElementById('g-recaptcha-response').value);
+        window.sessionStorage.setItem("votesSent", JSON.stringify(TOTAL_VOTES + 10))
+        setTimeout(() => {window.location.reload()}, 1000)
+    }
+
+    async function send_vote(token) {
+        fetch('https://tainangtrevietnam.vn/ajax/vote.aspx', {
+                mode: "no-cors",
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },    
+                body: new URLSearchParams({
+                    'token': token,
+                    'votes': '36,36,36,36,36,36,36,36,36,36',
+                    'year': '2024'
+                })
+            })
+            .then(response => response.text())
+            .then(data => { console.log(data); });
+    }
+
+</script>
+</head>
+
+<body>
+    <h1>Bạn đã gửi <span id="votenum">textsome</span> vote.</h1>
+    <p>Hướng dẫn: Bấm vào nút "Tôi không phải là robot" / "I'm not a robot" (gọi là "CAPTCHA") để gửi vote.</p>
+    <p>Giải CAPTCHA nếu xuất hiện (bấm vào những ảnh có chứa X, chọn tất cả Y, v.v.)</p>
+    <p>Sau khi giải xong, trang này sẽ tự reload. Tiếp tục giải CAPTCHA để vote.</p>
+    
+    <form method='POST' id="captcha">
+        <div class='g-recaptcha' data-sitekey='6Ld_cLUaAAAAAJnVWvly-j6dOCz9xARI7m1wNH0-' data-callback='trigger_send'></div>
+    </form>
+    <script>
+        $("span")[0].innerText = `${TOTAL_VOTES}`
+    </script>
+    <p>Bấm nút, bôi đen bừa chữ, gõ phím dưới đây tùy ý nếu thấy CAPTCHA yêu cầu chọn quá nhiều ảnh. Làm như thế sẽ giảm nghi ngờ của CAPTCHA.</p>
+    <button>nút này vô dụng.</button>
+    <input type="text" placeholder="nhập bừa vào đây">
+    <p style="font-size: 16px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean laoreet est libero, eu sodales tortor luctus ac. Nam sodales, metus sit amet tincidunt fringilla, tellus ipsum hendrerit elit, facilisis lacinia lorem quam non libero. Quisque luctus iaculis volutpat. Sed sodales finibus ligula vitae semper. Aliquam sit amet ultricies lorem, vel vestibulum purus. Nam eu ipsum vel quam venenatis rutrum. Suspendisse vel pulvinar augue. Etiam suscipit tortor orci, a consectetur neque interdum sed. Aliquam quis sapien eget ipsum hendrerit sagittis. Curabitur ac dignissim arcu. Nulla condimentum, lectus sit amet ullamcorper imperdiet, dui metus pellentesque eros, ac dictum purus libero a sem. Ut suscipit odio tellus, a porttitor mi hendrerit varius. Donec a metus pellentesque, facilisis ipsum eget, elementum urna. Praesent et malesuada lectus. Ut tincidunt eleifend leo et accumsan.
+
+        Pellentesque sagittis tortor mauris, eu fermentum ex malesuada tincidunt. Fusce sed dapibus risus. Nunc vel lacus sit amet massa aliquam semper. Nullam facilisis quis odio eu placerat. Nullam sed eleifend dolor. Curabitur scelerisque bibendum justo vel scelerisque. Etiam augue sem, pharetra non erat non, luctus convallis ex. Maecenas ultricies est ut metus venenatis volutpat sit amet cursus eros. Fusce sed ante gravida, porta dolor id, porta nunc.
+        
+        Curabitur consectetur porttitor urna. Donec convallis mattis purus tincidunt efficitur. Fusce orci arcu, interdum id tempus eget, finibus ut ante. Pellentesque gravida, nunc consequat ullamcorper congue, diam ante maximus diam, non ultrices enim metus a massa. Nunc eleifend lobortis diam et iaculis. Suspendisse sed ligula et leo faucibus ornare at sed dui. Etiam mi lorem, ultricies non eleifend vel, dictum nec arcu. Ut eu velit odio. Suspendisse quis enim enim. Fusce lacinia fringilla nulla eget ullamcorper. Nam odio nunc, congue ut quam at, feugiat finibus arcu. Fusce vel condimentum dolor, ac malesuada magna.
+        
+        Curabitur vestibulum tortor eu bibendum semper. Praesent eget felis vel sem porttitor semper. Etiam a molestie quam. Cras metus nisl, porttitor nec dignissim eget, fringilla eget tellus. Donec non consectetur tellus. Nulla lobortis pellentesque ligula, ac rhoncus diam eleifend quis. Mauris magna velit, pretium id accumsan ut, posuere vitae urna. Phasellus nec metus neque. Sed dolor nisl, rutrum ac lorem vitae, efficitur auctor arcu.
+        
+        Sed venenatis nec felis id facilisis. Nunc lacus ligula, gravida in tellus et, auctor lobortis diam. Integer sed dictum neque. Vivamus venenatis libero et erat aliquet, in viverra metus rutrum. Nam ac tempor lorem. Nulla scelerisque leo eu lorem dictum, vel pulvinar lorem semper. Donec euismod ac lacus sit amet sagittis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In quis nulla viverra, pulvinar nisi id, tincidunt felis. Ut nec egestas purus. Donec at ipsum ut nibh euismod condimentum id at velit. Donec ultrices facilisis lorem ut bibendum. Sed lectus diam, fermentum eu magna a, ultricies sagittis nibh. Curabitur lobortis congue mi, at pellentesque diam bibendum sed.</p>
+</body>
+</html>
